@@ -11,7 +11,6 @@ function Start-PythonJob($scriptPath, $jobName) {
 
 $serverJob = Start-PythonJob -scriptPath "server.py" -jobName "ServerJob"
 $senderJob = Start-PythonJob -scriptPath "sender.py" -jobName "SenderJob"
-$dotaMonitorJob = Start-PythonJob -scriptPath "dota_monitor.py" -jobName "DotaMonitorJob"
 
 Write-Host "Jobs started. Press any key to stop..."
 $x = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
@@ -20,15 +19,13 @@ Write-Host "Stopping jobs..."
 
 Stop-Job -Id $serverJob.Id
 Stop-Job -Id $senderJob.Id
-Stop-Job -Id $dotaMonitorJob.Id
 
 Start-Sleep -Seconds 2
 
 $serverJobState = (Get-Job -Id $serverJob.Id).State
 $senderJobState = (Get-Job -Id $senderJob.Id).State
-$dotaMonitorJobState = (Get-Job -Id $dotaMonitorJob.Id).State
 
-if ($serverJobState -eq "Running" -or $senderJobState -eq "Running" -or $dotaMonitorJobState -eq "Running") {
+if ($serverJobState -eq "Running" -or $senderJobState -eq "Running") {
     Write-Host "Jobs still running, killing all python processes..."
     Get-Process -Name python -ErrorAction SilentlyContinue | Stop-Process -Force
     Start-Sleep -Seconds 2
@@ -36,6 +33,5 @@ if ($serverJobState -eq "Running" -or $senderJobState -eq "Running" -or $dotaMon
 
 Remove-Job -Id $serverJob.Id -ErrorAction SilentlyContinue
 Remove-Job -Id $senderJob.Id -ErrorAction SilentlyContinue
-Remove-Job -Id $dotaMonitorJob.Id -ErrorAction SilentlyContinue
 
 Write-Host "Jobs stopped and removed."
