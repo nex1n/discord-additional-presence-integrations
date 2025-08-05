@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Anime Presence Sender",
+  "version": "1.0",
+  "description": "Отправка информации о просмотре аниме",
+  "permissions": ["scripting", "tabs", "activeTab"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.anilibria.tv/*",
+        "*://*.anilibria.app/*",
+        "*://*.anilibria.top/*",
+        "*://anilibria.tv/*",
+        "*://anilibria.app/*",
+        "*://anilibria.top/*"
+      ],
+      "js": ["content.js"]
+    }
+  ]
+}
